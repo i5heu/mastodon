@@ -1,0 +1,53 @@
+diff --git a/app/javascript/mastodon/features/compose/components/poll_form.jsx b/app/javascript/mastodon/features/compose/components/poll_form.jsx
+index 1a4d30abe..3b41f0b3f 100644
+--- a/app/javascript/mastodon/features/compose/components/poll_form.jsx
++++ b/app/javascript/mastodon/features/compose/components/poll_form.jsx
+@@ -9,7 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
+ import ImmutablePureComponent from 'react-immutable-pure-component';
+ 
+ import AutosuggestInput from 'mastodon/components/autosuggest_input';
+-import { Icon }  from 'mastodon/components/icon';
++import { Icon } from 'mastodon/components/icon';
+ import { IconButton } from 'mastodon/components/icon_button';
+ 
+ const messages = defineMessages({
+@@ -75,7 +75,7 @@ class OptionIntl extends PureComponent {
+     this.props.onSuggestionSelected(tokenStart, token, value, ['poll', 'options', this.props.index]);
+   };
+ 
+-  render () {
++  render() {
+     const { isPollMultiple, title, lang, index, autoFocus, intl } = this.props;
+ 
+     return (
+@@ -148,7 +148,7 @@ class PollForm extends ImmutablePureComponent {
+     this.props.onChangeSettings(this.props.expiresIn, !this.props.isMultiple);
+   };
+ 
+-  render () {
++  render() {
+     const { options, lang, expiresIn, isMultiple, onChangeOption, onRemoveOption, intl, ...other } = this.props;
+ 
+     if (!options) {
+@@ -164,7 +164,7 @@ class PollForm extends ImmutablePureComponent {
+         </ul>
+ 
+         <div className='poll__footer'>
+-          <button type='button' disabled={options.size >= 4} className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
++          <button type='button' disabled={options.size >= 16} className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
+ 
+           {/* eslint-disable-next-line jsx-a11y/no-onchange */}
+           <select value={expiresIn} onChange={this.handleSelectDuration}>
+diff --git a/app/validators/poll_validator.rb b/app/validators/poll_validator.rb
+index a32727796..7e940a93d 100644
+--- a/app/validators/poll_validator.rb
++++ b/app/validators/poll_validator.rb
+@@ -1,7 +1,7 @@
+ # frozen_string_literal: true
+ 
+ class PollValidator < ActiveModel::Validator
+-  MAX_OPTIONS      = 4
++  MAX_OPTIONS      = 16
+   MAX_OPTION_CHARS = 50
+   MAX_EXPIRATION   = 1.month.freeze
+   MIN_EXPIRATION   = 5.minutes.freeze
