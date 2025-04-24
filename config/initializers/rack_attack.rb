@@ -83,11 +83,15 @@ class Rack::Attack
   end
 
   throttle('throttle_media_proxy_authenticated', limit: 200, period: 10.minutes) do |req|
-    req.authenticated_user_id if req.path.start_with?('/media_proxy') && req.authenticated_user_id
+    if req.path.start_with?('/media_proxy') && (req.authenticated_user_id || req.warden_user_id)
+      req.authenticated_user_id || req.warden_user_id
+    end
   end
-
+  
   throttle('throttle_media_proxy_unauthenticated', limit: 30, period: 1.hour) do |req|
-    req.throttleable_remote_ip if req.path.start_with?('/media_proxy') && req.unauthenticated?
+    if req.path.start_with?('/media_proxy') && !req.authenticated_user_id && !req.warden_user_id
+      req.throttleable_remote_ip
+    end
   end
 
   throttle('throttle_api_sign_up', limit: 5, period: 30.minutes) do |req|
